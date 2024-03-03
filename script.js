@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const board = document.getElementById('board');
   const cells = document.querySelectorAll('.cell');
   const restartButton = document.getElementById('restart-button');
+  const resultDisplay = document.getElementById('result');
 
   let currentPlayer = 'X';
   let gameActive = true;
@@ -22,15 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (boardState.includes('')) return null;
     return 'T';
-  };
-
-  const endGame = (winner) => {
-    gameActive = false;
-    if (winner === 'T') {
-      alert('It\'s a tie!');
-    } else {
-      alert(`${winner} wins!`);
-    }
   };
 
   const botTurn = () => {
@@ -82,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cells.forEach(cell => {
       cell.textContent = '';
     });
+    resultDisplay.textContent = ''; // Clear result display
   };
 
   const handleCellClick = (e) => {
@@ -93,7 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const winner = checkWinner();
     if (winner) {
-      endGame(winner);
+      gameActive = false;
+      if (winner === 'T') {
+        resultDisplay.textContent = 'It\'s a tie!';
+      } else {
+        resultDisplay.textContent = `${winner} wins!`;
+      }
     } else {
       currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
       if (currentPlayer === 'O') {

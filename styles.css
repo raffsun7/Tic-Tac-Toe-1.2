@@ -55,3 +55,9 @@ button {
 button:hover {
   background-color: #0D47A1;
 }
+
+.result {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2em;
+  margin-top: 20px;
+}
