@@ -3,16 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-
   <title>Tic Tac Toe</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
     <h1>Tic Tac Toe</h1>
-	
+    <div class="mode-selector">
+      <label class="mode-label">Intermediate</label>
+      <label class="switch">
+        <input type="checkbox" id="mode-toggle">
+        <span class="slider round"></span>
+      </label>
+      <label class="mode-label">Hard</label>
+    </div>
     <div id="board" class="board">
       <div class="cell" data-cell-index="0"></div>
       <div class="cell" data-cell-index="1"></div>
@@ -25,9 +29,8 @@
       <div class="cell" data-cell-index="8"></div>
     </div>
     <div id="result" class="result"></div>
-    <button id="restart-button">Restart Game</button>
+    <button id="restart-button">Restart</button>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
