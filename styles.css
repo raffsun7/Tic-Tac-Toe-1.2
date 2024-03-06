@@ -17,7 +17,7 @@ body {
 
 h1 {
   font-size: 3rem;
-  margin-bottom: 20px;
+  margin-bottom: 0px; /* Adjusted margin-bottom */
   font-family: 'Lobster', cursive;
 }
 
@@ -39,10 +39,11 @@ h1 {
   font-size: 2rem;
   cursor: pointer;
   color: #fff;
+  transition: background-color 0.3s ease; /* Add transition for background-color */
 }
 
 .cell:hover {
-  background-color: #353C91;
+  background-color: #353C91; /* Change background color on hover */
 }
 
 .result {
@@ -66,55 +67,45 @@ h1 {
   transform: scale(1.1);
 }
 
-.mode-selector {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.mode-label {
-  margin: 0 10px;
+.mode-container {
+  text-align: center; /* Center the toggle button */
+  margin-bottom: 20px; /* Adjust the margin to provide the same space */
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 24px;
-  margin-top: 2px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  width: 50px;
+  height: 30px;
+  padding: 5px;
 }
 
-.switch input {
+.switch input { 
   opacity: 0;
   width: 0;
   height: 0;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
   background-color: #ccc;
-  transition: .4s;
-  border-radius: 20px;
+  border-radius: 15px; /* Adjust border radius for rounded corners */
+  transition: background-color 0.4s;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
-  left: 2px;
-  bottom: 2px;
+  height: 20px; /* Adjust height of the slider button */
+  width: 20px; /* Adjust width of the slider button */
+  left: 4px;
+  bottom: 4px;
   background-color: white;
-  transition: .4s;
   border-radius: 50%;
+  transition: transform 0.4s;
 }
 
 input:checked + .slider {
@@ -126,73 +117,14 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(16px);
-  transition: transform 0.3s ease;
+  transform: translateX(20px); /* Adjust the distance the button moves when checked */
 }
 
+/* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+  border-radius: 15px; /* Adjust border radius for rounded corners */
 }
 
 .slider.round:before {
   border-radius: 50%;
-}
-/* Add CSS transitions for smoother hover effects on cells */
-.cell {
-  width: 100px;
-  height: 100px;
-  background-color: #1B1A55;
-  border: 1px solid #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  cursor: pointer;
-  color: #fff;
-  transition: background-color 0.3s ease; /* Add transition for background-color */
-}
-
-.cell:hover {
-  background-color: #353C91; /* Change background color on hover */
-}
-
-/* Apply shadow effect to highlight cells when hovered over */
-.cell:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Apply shadow effect */
-}
-
-/* Use CSS animations to animate the appearance of X's and O's */
-/* Add animation for X */
-@keyframes fadeInX {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Add animation for O */
-@keyframes fadeInO {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Apply animations to X and O */
-.cell.X::after {
-  content: 'X';
-  animation: fadeInX 0.3s ease forwards; /* Apply X animation */
-}
-
-.cell.O::after {
-  content: 'O';
-  animation: fadeInO 0.3s ease forwards; /* Apply O animation */
 }

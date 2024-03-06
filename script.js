@@ -4,10 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const restartButton = document.getElementById('restart-button');
   const resultDisplay = document.getElementById('result');
   const modeToggle = document.getElementById('mode-toggle');
+
   let currentPlayer = 'X';
   let gameActive = true;
   let boardState = ['', '', '', '', '', '', '', '', ''];
-  let gameMode = 'basic'; // Default mode is basic
+  let againstBot = false; // Flag to indicate if playing against bot
 
   const winningCombos = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -29,95 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const displayResult = (winner) => {
     gameActive = false;
     if (winner === 'X') {
-      if (gameMode === 'difficult') {
-        resultDisplay.textContent = "Wow man, You are just a pro from another universe 😐🤒";
-      } else {
-        resultDisplay.textContent = 'Congratulate, You Win! 🥳';
-      }
+      resultDisplay.textContent = 'Player X wins!';
     } else if (winner === 'O') {
-      resultDisplay.textContent = 'HaHa, You Lost! 😂';
+      resultDisplay.textContent = againstBot ? 'Bot wins!' : 'Player O wins!';
     } else {
-      resultDisplay.textContent = 'We All Are Ass 😑';
-    }
-  };
-
-  const botTurn = () => {
-    const emptyCells = boardState.reduce((acc, cell, index) => {
-      if (!cell) acc.push(index);
-      return acc;
-    }, []);
-
-    // Easy mode: Basic algorithm with slight strategy
-    if (gameMode === 'easy') {
-      // Prioritize center cell if available
-      if (boardState[4] === '') {
-        boardState[4] = 'O';
-        cells[4].textContent = 'O';
-        currentPlayer = 'X';
-        return;
-      }
-      
-      // Otherwise, choose a random empty cell
-      const randomIndex = Math.floor(Math.random() * emptyCells.length);
-      const cellIndex = emptyCells[randomIndex];
-      boardState[cellIndex] = 'O';
-      cells[cellIndex].textContent = 'O';
-    } else { // Intermediate mode: Minimax algorithm with reduced depth
-      let bestScore = -Infinity;
-      let bestMove;
-      for (let index of emptyCells) {
-        boardState[index] = 'O';
-        let score = minimax(boardState, 0, false, 3); // Reduced depth to 3
-        boardState[index] = '';
-        if (score > bestScore) {
-          bestScore = score;
-          bestMove = index;
-        }
-      }
-      boardState[bestMove] = 'O';
-      cells[bestMove].textContent = 'O';
-    }
-    currentPlayer = 'X';
-    const winner = checkWinner();
-    if (winner) displayResult(winner);
-  };
-
-  const minimax = (board, depth, isMaximizing, maxDepth) => {
-    const result = checkWinner();
-    if (result !== null) {
-      if (result === 'X') {
-        return -10 + depth;
-      } else if (result === 'O') {
-        return 10 - depth;
-      } else {
-        return 0;
-      }
-    }
-    if (depth >= maxDepth) { // Check if maximum depth is reached
-      return 0;
-    }
-    if (isMaximizing) {
-      let bestScore = -Infinity;
-      for (let i = 0; i < 9; i++) {
-        if (board[i] === '') {
-          board[i] = 'O';
-          let score = minimax(board, depth + 1, false, maxDepth);
-          board[i] = '';
-          bestScore = Math.max(score, bestScore);
-        }
-      }
-      return bestScore;
-    } else {
-      let bestScore = Infinity;
-      for (let i = 0; i < 9; i++) {
-        if (board[i] === '') {
-          board[i] = 'X';
-          let score = minimax(board, depth + 1, true, maxDepth);
-          board[i] = '';
-          bestScore = Math.min(score, bestScore);
-        }
-      }
-      return bestScore;
+      resultDisplay.textContent = 'It\'s a tie!';
     }
   };
 
@@ -134,27 +51,94 @@ document.addEventListener('DOMContentLoaded', () => {
   const handleCellClick = (e) => {
     const cellIndex = e.target.dataset.cellIndex;
     if (boardState[cellIndex] || !gameActive) return;
+
     boardState[cellIndex] = currentPlayer;
     e.target.textContent = currentPlayer;
+
     const winner = checkWinner();
     if (winner) {
       displayResult(winner);
     } else {
       currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-      if (currentPlayer === 'O') {
-        setTimeout(botTurn, gameMode === 'basic' ? 800 : 1200); // Delay based on game mode
+      if (againstBot && currentPlayer === 'O') {
+        setTimeout(botTurn, 500); // Introduce a slight delay for visual effect
       }
     }
   };
 
-  const handleModeChange = () => {
-    gameMode = modeToggle.checked ? 'difficult' : 'basic';
-    restartGame();
+  const botTurn = () => {
+    const emptyCells = boardState.reduce((acc, cell, index) => {
+      if (!cell) acc.push(index);
+      return acc;
+    }, []);
+
+    let bestScore = -Infinity;
+    let bestMove;
+
+    for (let i = 0; i < emptyCells.length; i++) {
+      let move = emptyCells[i];
+      boardState[move] = 'O';
+      let score = minimax(boardState, 0, false);
+      boardState[move] = '';
+      if (score > bestScore) {
+        bestScore = score;
+        bestMove = move;
+      }
+    }
+
+    boardState[bestMove] = 'O';
+    cells[bestMove].textContent = 'O';
+
+    currentPlayer = 'X';
+    const winner = checkWinner();
+    if (winner) displayResult(winner);
   };
+
+  const minimax = (board, depth, isMaximizing) => {
+    const result = checkWinner();
+    if (result !== null) {
+      if (result === 'O') {
+        return 10 - depth;
+      } else if (result === 'X') {
+        return depth - 10;
+      } else {
+        return 0;
+      }
+    }
+
+    if (isMaximizing) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < board.length; i++) {
+        if (board[i] === '') {
+          board[i] = 'O';
+          let score = minimax(board, depth + 1, false);
+          board[i] = '';
+          bestScore = Math.max(score, bestScore);
+        }
+      }
+      return bestScore;
+    } else {
+      let bestScore = Infinity;
+      for (let i = 0; i < board.length; i++) {
+        if (board[i] === '') {
+          board[i] = 'X';
+          let score = minimax(board, depth + 1, true);
+          board[i] = '';
+          bestScore = Math.min(score, bestScore);
+        }
+      }
+      return bestScore;
+    }
+  };
+
+  // Event listener for mode toggle
+  modeToggle.addEventListener('change', () => {
+    againstBot = modeToggle.checked;
+    restartGame();
+  });
 
   cells.forEach(cell => {
     cell.addEventListener('click', handleCellClick);
   });
   restartButton.addEventListener('click', restartGame);
-  modeToggle.addEventListener('change', handleModeChange);
 });
