@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const restartButton = document.getElementById('restart-button');
   const resultDisplay = document.getElementById('result');
   const modeToggle = document.getElementById('mode-toggle');
+  const playIntermediateButton = document.getElementById('play-intermediate');
 
   let currentPlayer = 'X';
   let gameActive = true;
@@ -32,7 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (winner === 'X') {
       resultDisplay.textContent = 'Player X wins!';
     } else if (winner === 'O') {
-      resultDisplay.textContent = againstBot ? 'Bot wins!' : 'Player O wins!';
+      if (againstBot) {
+        resultDisplay.textContent = 'You Lost😂!';
+        playIntermediateButton.style.display = 'inline-block';
+      } else {
+        resultDisplay.textContent = 'Player O wins!';
+      }
     } else {
       resultDisplay.textContent = 'It\'s a tie!';
     }
@@ -46,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cell.textContent = '';
     });
     resultDisplay.textContent = ''; // Clear result display
+    playIntermediateButton.style.display = 'none'; // Hide the intermediate button
   };
 
   const handleCellClick = (e) => {
@@ -141,4 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
     cell.addEventListener('click', handleCellClick);
   });
   restartButton.addEventListener('click', restartGame);
+
+  playIntermediateButton.addEventListener('click', () => {
+    window.location.href = 'intermediate_page.html';
+  });
 });

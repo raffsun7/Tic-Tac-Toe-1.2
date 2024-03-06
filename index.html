@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tik Tak Toe</title>
   <!-- Include Google Material Icons CSS -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Tic Tac Toe</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <!-- Removed the title from the h1 tag -->
-    <h1></h1>
     <div class="mode-container">
       <!-- Icon for multiple players -->
       <i class="material-icons">group</i>
@@ -25,6 +24,7 @@
       <span class="material-symbols-outlined">
 robot_2
 </span>
+
     </div>
     <div id="board" class="board">
       <div class="cell" data-cell-index="0"></div>
@@ -38,8 +38,8 @@ robot_2
       <div class="cell" data-cell-index="8"></div>
     </div>
     <div id="result" class="result"></div>
-    <!-- Removed the icon from the restart button -->
     <button id="restart-button">Restart</button>
+    <button id="play-intermediate" style="display: none;">Play Intermediate</button>
   </div>
   <!-- Include your JavaScript file -->
   <script src="script.js"></script>

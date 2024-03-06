@@ -15,11 +15,6 @@ body {
   padding: 20px;
 }
 
-h1 {
-  font-size: 3rem;
-  margin-bottom: 0px; /* Adjusted margin-bottom */
-  font-family: 'Lobster', cursive;
-}
 
 .board {
   display: grid;
@@ -127,4 +122,20 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+#play-intermediate {
+  font-size: 1rem;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+  margin-left: 10px; /* Adjust spacing from the restart button */
+}
+
+#play-intermediate:hover {
+  background-color: #0056B3;
+  transform: scale(1.1);
 }
