@@ -9,12 +9,13 @@ body {
   background-color: #070F2B;
   color: #fff;
 }
-
+#robot2{
+  transition: 0.8s;
+}
 .container {
   text-align: center;
   padding: 20px;
 }
-
 
 .board {
   display: grid;
@@ -45,20 +46,32 @@ body {
   font-size: 1.2rem;
   margin-bottom: 20px;
 }
-
-#restart-button {
+#play-hard{
+	background-color: #8A0303;
+}
+#play-hard:hover{
+	background-color:#A83D2E;
+}
+#restart-button{
+  background-color: #007BFF;
+}
+#restart-button:hover{
+  background-color: #0056B3;
+}
+#restart-button,
+#play-hard {
   font-size: 1rem;
   padding: 10px 20px;
-  background-color: #007BFF;
   color: #fff;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 5px;
+  margin-left: 10px; /* Adjust spacing from the restart button */
 }
 
-#restart-button:hover {
-  background-color: #0056B3;
+#restart-button:hover,
+#play-hard:hover {
   transform: scale(1.1);
 }
 
@@ -122,20 +135,4 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
-}
-#play-intermediate {
-  font-size: 1rem;
-  padding: 10px 20px;
-  background-color: #007BFF;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 5px;
-  margin-left: 10px; /* Adjust spacing from the restart button */
-}
-
-#play-intermediate:hover {
-  background-color: #0056B3;
-  transform: scale(1.1);
 }

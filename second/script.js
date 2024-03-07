@@ -26,45 +26,73 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const botTurn = () => {
-    const emptyCells = boardState.reduce((acc, cell, index) => {
-      if (!cell) acc.push(index);
-      return acc;
-    }, []);
+    let bestMove;
+    let bestScore = -Infinity;
 
-    // Check for winning moves
-    for (let index of emptyCells) {
-      boardState[index] = 'O';
-      if (checkWinner() === 'O') {
-        cells[index].textContent = 'O';
-        currentPlayer = 'X';
-        return;
+    for (let i = 0; i < boardState.length; i++) {
+      if (!boardState[i]) {
+        boardState[i] = 'O';
+        let score = minimax(boardState, 0, false);
+        boardState[i] = '';
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = i;
+        }
       }
-      boardState[index] = '';
     }
 
-    // Check for player's winning moves
-    for (let index of emptyCells) {
-      boardState[index] = 'X';
-      if (checkWinner() === 'X') {
-        boardState[index] = 'O';
-        cells[index].textContent = 'O';
-        currentPlayer = 'X';
-        return;
+    setTimeout(() => {
+      boardState[bestMove] = 'O';
+      cells[bestMove].textContent = 'O';
+      currentPlayer = 'X';
+
+      const winner = checkWinner();
+      if (winner) {
+        gameActive = false;
+        if (winner === 'T') {
+          resultDisplay.textContent = 'It\'s a tie!';
+        } else {
+          resultDisplay.textContent = `${winner} wins!`;
+        }
       }
-      boardState[index] = '';
-    }
-
-    // Choose a random available cell
-    const randomIndex = Math.floor(Math.random() * emptyCells.length);
-    const cellIndex = emptyCells[randomIndex];
-    boardState[cellIndex] = 'O';
-    cells[cellIndex].textContent = 'O';
-
-    currentPlayer = 'X';
+    }, 1300); // Delay of 1.3 seconds (1300 milliseconds)
   };
 
-  const handleBotTurn = () => {
-    setTimeout(botTurn, 650); // Delay of 0.65 seconds (650 milliseconds)
+  const minimax = (board, depth, isMaximizing) => {
+    let result = checkWinner();
+    if (result !== null) {
+      if (result === 'O') {
+        return 10 - depth;
+      } else if (result === 'X') {
+        return depth - 10;
+      } else {
+        return 0;
+      }
+    }
+
+    if (isMaximizing) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < board.length; i++) {
+        if (!board[i]) {
+          board[i] = 'O';
+          let score = minimax(board, depth + 1, false);
+          board[i] = '';
+          bestScore = Math.max(bestScore, score);
+        }
+      }
+      return bestScore;
+    } else {
+      let bestScore = Infinity;
+      for (let i = 0; i < board.length; i++) {
+        if (!board[i]) {
+          board[i] = 'X';
+          let score = minimax(board, depth + 1, true);
+          board[i] = '';
+          bestScore = Math.min(bestScore, score);
+        }
+      }
+      return bestScore;
+    }
   };
 
   const restartGame = () => {
@@ -74,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cells.forEach(cell => {
       cell.textContent = '';
     });
-    resultDisplay.textContent = ''; // Clear result display
+    resultDisplay.textContent = '';
   };
 
   const handleCellClick = (e) => {
@@ -95,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
       if (currentPlayer === 'O') {
-        handleBotTurn();
+        botTurn();
       }
     }
   };
