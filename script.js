@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayResult = (winner) => {
         gameActive = false;
         if (winner === 'X') {
-            resultDisplay.textContent = 'Congratulations on your win!🎉 Feeling confident?☺️ Get ready for the next challenge.😏 Are you up for it?😗  Play.. ⬇️';
+            resultDisplay.textContent = 'Congrats! You won!🎉 Get ready for the next challenge. (The Horror Edition ☠️)';
         } else if (winner === 'O') {
             if (againstBot) {
                 resultDisplay.textContent = 'You Lost😂!';
